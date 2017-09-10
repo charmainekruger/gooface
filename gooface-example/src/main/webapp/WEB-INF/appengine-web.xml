@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+    <application>gooface-example</application>
+    <runtime>java8</runtime>
+    <ssl-enabled>true</ssl-enabled>
+    <sessions-enabled>true</sessions-enabled>
+    <threadsafe>true</threadsafe>
+    <env-variables>
+        <env-var name="foo" value="bar" />
+    </env-variables>
+    
+    <system-properties>
+        <property name="bla" value="poo" />
+    </system-properties>
+    
+</appengine-web-app>
