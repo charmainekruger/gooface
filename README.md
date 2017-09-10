@@ -2,4 +2,4 @@
 Facebook leads Google App Engine integration
 
 ## High level design
-[](high-level.png)
+[](https://raw.githubusercontent.com/charmainekruger/gooface/master/high-level.png)
