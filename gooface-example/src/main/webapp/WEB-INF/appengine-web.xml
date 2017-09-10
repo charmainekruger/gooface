@@ -6,12 +6,10 @@
     <ssl-enabled>true</ssl-enabled>
     <sessions-enabled>true</sessions-enabled>
     <threadsafe>true</threadsafe>
-    <env-variables>
-        <env-var name="foo" value="bar" />
-    </env-variables>
-    
+        
     <system-properties>
-        <property name="bla" value="poo" />
+        <property name="verify.token" value="45be8cb2-8daf-11e7-bb31-be2e44b06b34" />
+        <property name="access.token" value="EAAWOZBmRbVj8BABbpERpZBRXEWXUbWO7aSiTyekMIFTS6sCoB0CSOTfUrSZCsdBXd8575P0svPmUxZBzVEYgqokQEZBEJwNraOFZCZBrAEuGn9OdTE1yv8SzVguEDyXNw6yG0Apwq0X7wyx3vIh7tDAouf2hzSeRnkQlE3P9HEmKq3BDeFuDUy2" />
     </system-properties>
     
 </appengine-web-app>

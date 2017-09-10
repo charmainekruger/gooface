@@ -1,9 +1,17 @@
 package com.github.chamainekruger.gooface.core;
 
+import com.github.chamainekruger.gooface.core.event.CampaignLeadEvent;
+import com.github.chamainekruger.gooface.core.event.LeadsEventPublisher;
+import com.github.chamainekruger.gooface.core.facebook.Campaign;
+import com.github.chamainekruger.gooface.core.facebook.Lead;
 import com.restfb.DefaultJsonMapper;
 import com.restfb.JsonMapper;
+import com.restfb.types.webhook.PageLeadgen;
+import com.restfb.types.webhook.WebhookEntry;
 import com.restfb.types.webhook.WebhookObject;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -21,22 +29,21 @@ import lombok.extern.java.Log;
 @Log
 public class FacebookLeadsWebhook extends HttpServlet {
 
-    private final String HUB_CHALLENGE = "hub.challenge";
-    private final String HUB_VERIFY_TOKEN = "hub.verify_token";
-    private final String VERIFY_TOKEN = "45be8cb2-8daf-11e7-bb31-be2e44b06b34";
+    private FacebookFetcher facebookFetcher = null;
+    private final LeadsEventPublisher leadsEventPublisher = new LeadsEventPublisher();
     
     @Override
     public void init(ServletConfig config) throws ServletException {
-        log.severe(">>>>>>>>>>>>>>>>>>>>>>> GOOFACE <<<<<<<<<<<<<<<<<<<");
-        log.log(Level.SEVERE, "foo = {0}", System.getenv("foo"));
-        log.log(Level.SEVERE, "bla = {0}", System.getProperty("bla"));
-        log.severe(">>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<");
+        this.verifyToken = System.getProperty(VERIFY_TOKEN_KEY);
+        this.accessToken = System.getProperty(ACCESS_TOKEN_KEY);
+        this.facebookFetcher = new FacebookFetcher(accessToken);
+
     }
     
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String token = request.getParameter(HUB_VERIFY_TOKEN);
-        if (token != null && !token.isEmpty() && token.equals(VERIFY_TOKEN)) {
+        if (token != null && !token.isEmpty() && token.equals(this.verifyToken)) {
             String challenge = request.getParameter(HUB_CHALLENGE);
             response.getWriter().write(challenge);
             response.getWriter().flush();
@@ -44,30 +51,48 @@ public class FacebookLeadsWebhook extends HttpServlet {
     }
     
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String body = req.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
         log.log(Level.INFO, "Receiving lead from Facebook [{0}]", body);
 
         JsonMapper mapper = new DefaultJsonMapper();
-        WebhookObject webhook = mapper.toJavaObject(body, WebhookObject.class);
-        log.log(Level.INFO, "webhook [{0}]", webhook);
+        WebhookObject webhookObject = mapper.toJavaObject(body, WebhookObject.class);
+        log.log(Level.INFO, "webhookObject [{0}]", webhookObject);
         
-        // TODO: Fire event
-//
-//        List<WebhookEntry> entryList = webhook.getEntryList();
-//        entryList.stream().map((entry) -> entry.getChanges()).forEachOrdered((changes) -> {
-//            changes.stream().map((change) -> change.getValue()).map((value) -> (PageLeadgen) value).forEachOrdered((pageLeadgen) -> {
-//
-//                try {
-//                    String campaignName = getLeadCampaignName(pageLeadgen.getFormId());
-//                    logLead(pageLeadgen.getLeadgenId(), campaignName);
-//
-//                } catch (Exception ex) {
-//                    Logger.getLogger(FacebookLeadsServlet.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            });
-//        });
-
+        List<Webhook> webhooks = toWebhookList(webhookObject);
+        
+        for(Webhook webhook : webhooks){
+            try {
+                Campaign campaign = facebookFetcher.getCampaign(webhook.getFormId());
+                log.info("Campaign = " + campaign);
+                Lead lead = facebookFetcher.getLead(webhook.getLeadId());
+                log.info("Lead = " + lead);
+                leadsEventPublisher.publish(new CampaignLeadEvent(campaign, lead));
+            } catch (FacebookFetcherException ex) {
+                log.log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
+    private List<Webhook> toWebhookList(WebhookObject webhookObject){
+        List<Webhook> webhooks = new ArrayList<>();
+        List<WebhookEntry> entryList = webhookObject.getEntryList();
+        entryList.stream().map((entry) -> entry.getChanges()).forEachOrdered((changes) -> {
+            changes.stream().map((change) -> change.getValue()).map((value) -> (PageLeadgen) value).forEachOrdered((pageLeadgen) -> {
+                Webhook webhook = new Webhook(Long.valueOf(pageLeadgen.getLeadgenId()), Long.valueOf(pageLeadgen.getFormId()));
+                webhooks.add(webhook);
+            });
+        });
+        return webhooks;
+    }
+ 
+    
+    private static final String HUB_CHALLENGE = "hub.challenge";
+    private static final String HUB_VERIFY_TOKEN = "hub.verify_token";
+    private static final String VERIFY_TOKEN_KEY = "verify.token";
+    private static final String ACCESS_TOKEN_KEY = "access.token";
+    
+    // To be configured
+    private String verifyToken = null;
+    private String accessToken = null;
 }

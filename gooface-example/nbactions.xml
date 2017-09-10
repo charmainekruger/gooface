@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-gae deploy</actionName>
+            <displayName>gae deploy</displayName>
+            <goals>
+                <goal>appengine:deploy</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>gae</activatedProfile>
+            </activatedProfiles>
+        </action>
+    </actions>
