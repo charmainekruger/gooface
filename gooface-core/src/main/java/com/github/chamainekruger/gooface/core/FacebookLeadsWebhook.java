@@ -37,7 +37,8 @@ public class FacebookLeadsWebhook extends HttpServlet {
         this.verifyToken = System.getProperty(VERIFY_TOKEN_KEY);
         this.accessToken = System.getProperty(ACCESS_TOKEN_KEY);
         this.facebookFetcher = new FacebookFetcher(accessToken);
-
+        this.projectId = System.getProperty(PROJECT_ID);
+        this.topicId = System.getProperty(TOPIC_ID);
     }
     
     @Override
@@ -64,10 +65,9 @@ public class FacebookLeadsWebhook extends HttpServlet {
         for(Webhook webhook : webhooks){
             try {
                 Campaign campaign = facebookFetcher.getCampaign(webhook.getFormId());
-                log.info("Campaign = " + campaign);
                 Lead lead = facebookFetcher.getLead(webhook.getLeadId());
-                log.info("Lead = " + lead);
-                leadsEventPublisher.publish(new CampaignLeadEvent(campaign, lead));
+                CampaignLeadEvent campaignLeadEvent = new CampaignLeadEvent(campaign,lead);
+                leadsEventPublisher.publishMessages(campaignLeadEvent,projectId, topicId);
             } catch (FacebookFetcherException ex) {
                 log.log(Level.SEVERE, null, ex);
             }
@@ -91,8 +91,13 @@ public class FacebookLeadsWebhook extends HttpServlet {
     private static final String HUB_VERIFY_TOKEN = "hub.verify_token";
     private static final String VERIFY_TOKEN_KEY = "verify.token";
     private static final String ACCESS_TOKEN_KEY = "access.token";
-    
+    private static final String PROJECT_ID = "project.id";
+    private static final String TOPIC_ID = "topic.id";
+       
     // To be configured
     private String verifyToken = null;
     private String accessToken = null;
+    private String projectId = null;
+    private String topicId = null;    
+    
 }
