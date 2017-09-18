@@ -1,7 +1,5 @@
-package com.github.chamainekruger.gooface.core.event;
+package com.github.chamainekruger.gooface.common;
 
-import com.github.chamainekruger.gooface.core.facebook.Campaign;
-import com.github.chamainekruger.gooface.core.facebook.Lead;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

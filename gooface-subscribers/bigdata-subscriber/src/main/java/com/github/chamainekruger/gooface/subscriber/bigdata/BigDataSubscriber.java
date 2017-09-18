@@ -1,10 +1,12 @@
 package com.github.chamainekruger.gooface.subscriber.bigdata;
 
+import com.github.chamainekruger.gooface.common.CampaignLeadEvent;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.cloud.pubsub.v1.PagedResponseWrappers;
 import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
+import com.google.gson.Gson;
 import com.google.pubsub.v1.ListSubscriptionsRequest;
 import com.google.pubsub.v1.ProjectName;
 import com.google.pubsub.v1.PubsubMessage;
@@ -61,11 +63,17 @@ public class BigDataSubscriber implements ServletContextListener {
             public void receiveMessage(PubsubMessage message, AckReplyConsumer consumer) {
                 // handle incoming message, then ack/nack the received message
                 
-                log.info("=========================================================");
+                Gson gson = new Gson();
+                CampaignLeadEvent campaignLeadEvent = gson.fromJson(message.getData().toStringUtf8(), CampaignLeadEvent.class);
+                log.info("campaignLeadEvent : " + campaignLeadEvent.toString());
+                
+                log.info("---------------------------------------------------------");
                 log.info("Id : " + message.getMessageId());
                 log.info("Data : " + message.getData().toStringUtf8());
                 consumer.ack();
-                log.info("=========================================================");
+                log.info("---------------------------------------------------------");
+                        
+                
             }
         };
 

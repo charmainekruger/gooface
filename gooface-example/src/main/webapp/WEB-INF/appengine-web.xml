@@ -10,9 +10,14 @@
     <system-properties>
         <property name="verify.token" value="45be8cb2-8daf-11e7-bb31-be2e44b06b34" />
         <property name="access.token" value="EAAWOZBmRbVj8BABbpERpZBRXEWXUbWO7aSiTyekMIFTS6sCoB0CSOTfUrSZCsdBXd8575P0svPmUxZBzVEYgqokQEZBEJwNraOFZCZBrAEuGn9OdTE1yv8SzVguEDyXNw6yG0Apwq0X7wyx3vIh7tDAouf2hzSeRnkQlE3P9HEmKq3BDeFuDUy2" />
-        <property name="project.id" value="discovery-bigquery" />
+        <property name="project.id" value="some-project" />
         <property name="topic.id" value="gooface" />
+        <property name="account.id" value="some-account-service-acc@some-account.iam.gserviceaccount.com" />
+        <property name="dataset.id" value="facebook_leads" />
+        <property name="table.id" value="facebook_leads" />
         
     </system-properties>
     
 </appengine-web-app>
+
+

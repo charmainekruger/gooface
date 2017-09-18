@@ -7,19 +7,18 @@
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
-    
-    <artifactId>gooface-core</artifactId>
+    <artifactId>gooface-common</artifactId>
     <packaging>jar</packaging>
     
-    <name>gooface-core</name>
-    <description>Core library for facebook lead integration</description>
-      
+    <properties>
+        <restfb.version>1.45.0</restfb.version>
+    </properties>
+    
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>gooface-common</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.restfb</groupId>
+            <artifactId>restfb</artifactId>
+            <version>${restfb.version}</version>
         </dependency>
     </dependencies>
-    
 </project>

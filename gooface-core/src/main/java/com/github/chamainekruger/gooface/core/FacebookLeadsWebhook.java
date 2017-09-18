@@ -1,9 +1,9 @@
 package com.github.chamainekruger.gooface.core;
 
-import com.github.chamainekruger.gooface.core.event.CampaignLeadEvent;
+import com.github.chamainekruger.gooface.common.CampaignLeadEvent;
 import com.github.chamainekruger.gooface.core.event.LeadsEventPublisher;
-import com.github.chamainekruger.gooface.core.facebook.Campaign;
-import com.github.chamainekruger.gooface.core.facebook.Lead;
+import com.github.chamainekruger.gooface.common.Campaign;
+import com.github.chamainekruger.gooface.common.Lead;
 import com.restfb.DefaultJsonMapper;
 import com.restfb.JsonMapper;
 import com.restfb.types.webhook.PageLeadgen;
@@ -85,8 +85,7 @@ public class FacebookLeadsWebhook extends HttpServlet {
         });
         return webhooks;
     }
- 
-    
+     
     private static final String HUB_CHALLENGE = "hub.challenge";
     private static final String HUB_VERIFY_TOKEN = "hub.verify_token";
     private static final String VERIFY_TOKEN_KEY = "verify.token";

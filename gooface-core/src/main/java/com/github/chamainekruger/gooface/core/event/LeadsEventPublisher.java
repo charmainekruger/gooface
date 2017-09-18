@@ -1,5 +1,6 @@
 package com.github.chamainekruger.gooface.core.event;
 
+import com.github.chamainekruger.gooface.common.CampaignLeadEvent;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.pubsub.v1.PagedResponseWrappers.ListTopicsPagedResponse;
 import com.google.cloud.pubsub.v1.Publisher;

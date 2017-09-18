@@ -1,7 +1,7 @@
 package com.github.chamainekruger.gooface.core;
 
-import com.github.chamainekruger.gooface.core.facebook.Campaign;
-import com.github.chamainekruger.gooface.core.facebook.Lead;
+import com.github.chamainekruger.gooface.common.Campaign;
+import com.github.chamainekruger.gooface.common.Lead;
 import com.restfb.DefaultJsonMapper;
 import com.restfb.JsonMapper;
 import java.io.BufferedReader;

@@ -1,4 +1,4 @@
-package com.github.chamainekruger.gooface.core.facebook;
+package com.github.chamainekruger.gooface.common;
 
 import com.restfb.Facebook;
 import java.text.ParseException;

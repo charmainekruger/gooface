@@ -222,6 +222,7 @@
     </profiles>
     
     <modules>
+        <module>gooface-common</module>
         <module>gooface-core</module>
         <module>gooface-subscribers</module>
         <module>gooface-example</module>

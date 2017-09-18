@@ -14,4 +14,23 @@
     
     <name>bigdata-subscriber</name>
     <description>Receive event and save then to Big Data</description>
+    
+    <properties>
+        <bigquery.version>0.23.1-beta</bigquery.version>
+    </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>gooface-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+         <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-bigquery</artifactId>
+            <version>${bigquery.version}</version>
+        </dependency>
+        
+    </dependencies>
 </project>
