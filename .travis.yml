@@ -1,2 +1,18 @@
- 
 language: java
+before_deploy:
+- mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep
+  -v '\[')
+deploy:
+  provider: releases
+  api_key:
+    secure: AinvrAYrQmwbbBLxYxp08QIXWeoz0Fhv5VBKgehoUbHs61FkRZEN1tqogvTPEnAftz+WF3OJ161ovsDPpUbDW/i4weB3ufVOLrGEXVz4ZzD1zo39Fi3vOvwnYgC+zwQdroMcw0izrSoMzDDZKj50PIP12hYv8PvT3fRWpTBajSWtb3JqLu44045QK7EowAXJCXaabQc7xC2pK4UJbsB6CSyppNRiqA0v0V7U7K/bdF+yLVKHCc6KJLQZf1IFTxAUDDad7KlwGerZC+AIo3VIEb2bJsnDTilTRdQ7z5biXpteke/avQB7JFeieBsvzHyyN7P9sIRnRD5Wt6nHIxDEM51WoUk+o0G1QFf3MXOJ80Q3iW98H0jdnSIvZqAPtbZixNmLM/T6WqF+r5qLWG40ePezOq8zRUnLPrMnMoC3KdiYBZSb72IJ7W/oewu6K06B2PvxV2vL/qaP0zdshNGJpAcu2f1m+6HzUgZwd5vso9MHMOwYPHkTE7gPwqvxj2LKZFpVKXNmTrOnKqeKm57Vm7UeNd4s9FR+/xWHnzHFIWGt79zRotwak42r3/6SDlSh8oH6xfrAlNmeGgOw/jTjUg3mce1ZOF4Yz7gqFJ0+K2Yhzr8aIy2fvjqnhmbDS/KHbdNrT+AWW1f9QeLJb74sUb7SjEpSaTbP5FJyFSy19+w=
+  file: 
+        - gooface-common/target/gooface-common-$project_version.jar
+        - gooface-core/target/gooface-core-$project_version.jar
+        - gooface-example/target/gooface-example.war
+        - gooface-subscribers/bigdata-subscriber/target/bigdata-subscriber-$project_version.jar
+  skip_cleanup: true
+  on:
+    repo: charmainekruger/gooface
+  name: $project_version
