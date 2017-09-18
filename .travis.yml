@@ -1,18 +1,23 @@
 language: java
+
 before_deploy:
-- mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
-- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
-deploy:
-  provider: releases
-  api_key:
-    secure: PZsXzMRV4t5qOxtddvvffB2nQe3ZjtsY20hKEb4W94CjkdczU8NYjOhwwytv+tBlCe8TFxRsKh2ZjqH75gKFmkd2Yl6uK5VUrNZ8LaZQRv+QgzGdRG5K2qG7yhrxuDuHo8nBeHGcPHF49bhB8PwswD3Om61B4dNFAbVK7cBNxzbeWvrarNpcT8jt3isIvEOjeqWa0aefg+wCP0gPYtyTgfDLdkAjL8Lo1YxqiBWGmikYRFdbpAyVldsxFPlouTq+R11SgRh9Eifc+ZHaX84BsQGEKEiuUOkviSEjMGhVJrR0ouUm7YgbRHntVmghX+hLb06HDGsKXWSy2XYSyB5bpEPR1VEeXgIVHwAQi8T4tesdg0LyukJZtXmlpZTM5NlPXY7MisgpudtLGphMzlNQoGSeYUZU2w2RYPg0TlleXH0foJzvFmrB3M5d5/FL/ecWAI0QpAea7ZyO/wwjDusk1kgfB0C0BUHhNz/hubvXPneSmbAvMF7BLBiwnfHu4ZKuLMIIgGjP3KTT8NQFTSjF+5gBF7E6R6WLAf3nUb9YeFjeVwjdB2OyqcCRCBW4AAGLcr6CQTagU2OC1/WLnkKfnzWzkSs7N3IkTPaKDe2VWmDvaA3iYeogMYCeWi6Z0WIRbtSvZf5JdE5mfQLpTX5iogvu595GV/gjn+A/z4RnIlQ=
-  file: 
-    - gooface-common/target/gooface-common-$project_version.jar
-    - gooface-core/target/gooface-core-$project_version.jar
-    - gooface-example/target/gooface-example.war
-    - gooface-subscribers/bigdata-subscriber/target/bigdata-subscriber-$project_version.jar
-  skip_cleanup: true  
-  on:
-    repo: charmainekruger/gooface
+    - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+    - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
     
-  name: $project_version
+deploy:
+    provider: releases
+    api_key:
+        secure: PZsXzMRV4t5qOxtddvvffB2nQe3ZjtsY20hKEb4W94CjkdczU8NYjOhwwytv+tBlCe8TFxRsKh2ZjqH75gKFmkd2Yl6uK5VUrNZ8LaZQRv+QgzGdRG5K2qG7yhrxuDuHo8nBeHGcPHF49bhB8PwswD3Om61B4dNFAbVK7cBNxzbeWvrarNpcT8jt3isIvEOjeqWa0aefg+wCP0gPYtyTgfDLdkAjL8Lo1YxqiBWGmikYRFdbpAyVldsxFPlouTq+R11SgRh9Eifc+ZHaX84BsQGEKEiuUOkviSEjMGhVJrR0ouUm7YgbRHntVmghX+hLb06HDGsKXWSy2XYSyB5bpEPR1VEeXgIVHwAQi8T4tesdg0LyukJZtXmlpZTM5NlPXY7MisgpudtLGphMzlNQoGSeYUZU2w2RYPg0TlleXH0foJzvFmrB3M5d5/FL/ecWAI0QpAea7ZyO/wwjDusk1kgfB0C0BUHhNz/hubvXPneSmbAvMF7BLBiwnfHu4ZKuLMIIgGjP3KTT8NQFTSjF+5gBF7E6R6WLAf3nUb9YeFjeVwjdB2OyqcCRCBW4AAGLcr6CQTagU2OC1/WLnkKfnzWzkSs7N3IkTPaKDe2VWmDvaA3iYeogMYCeWi6Z0WIRbtSvZf5JdE5mfQLpTX5iogvu595GV/gjn+A/z4RnIlQ=
+    file: 
+        - gooface-common/target/gooface-common-$project_version.jar
+        - gooface-core/target/gooface-core-$project_version.jar
+        - gooface-example/target/gooface-example.war
+        - gooface-subscribers/bigdata-subscriber/target/bigdata-subscriber-$project_version.jar
+    skip_cleanup: true  
+    on:
+        repo: charmainekruger/gooface
+    name: $project_version
+
+cache:
+    directories:
+        - ~/.m2/repository
