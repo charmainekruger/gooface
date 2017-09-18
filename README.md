@@ -1,3 +1,6 @@
+Build status: [![build_status](https://travis-ci.org/charmainekruger/gooface.svg?branch=master)](https://travis-ci.org/charmainekruger/gooface)
+
+
 # gooface
 Facebook leads Google App Engine integration
 
