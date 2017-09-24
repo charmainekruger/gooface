@@ -1,9 +1,9 @@
 package com.github.chamainekruger.gooface.core;
 
 import com.github.chamainekruger.gooface.common.CampaignLeadEvent;
-import com.github.chamainekruger.gooface.core.event.LeadsEventPublisher;
 import com.github.chamainekruger.gooface.common.Campaign;
 import com.github.chamainekruger.gooface.common.Lead;
+import com.github.chamainekruger.gooface.core.event.LeadsEventQueue;
 import com.restfb.DefaultJsonMapper;
 import com.restfb.JsonMapper;
 import com.restfb.types.webhook.PageLeadgen;
@@ -30,15 +30,14 @@ import lombok.extern.java.Log;
 public class FacebookLeadsWebhook extends HttpServlet {
 
     private FacebookFetcher facebookFetcher = null;
-    private final LeadsEventPublisher leadsEventPublisher = new LeadsEventPublisher();
+    private final LeadsEventQueue leadsEventQueue = new LeadsEventQueue();
     
     @Override
     public void init(ServletConfig config) throws ServletException {
         this.verifyToken = System.getProperty(VERIFY_TOKEN_KEY);
         this.accessToken = System.getProperty(ACCESS_TOKEN_KEY);
         this.facebookFetcher = new FacebookFetcher(accessToken);
-        this.projectId = System.getProperty(PROJECT_ID);
-        this.topicId = System.getProperty(TOPIC_ID);
+        this.listeners = System.getProperty(LISTENERS).split(COMMA);
     }
     
     @Override
@@ -67,7 +66,7 @@ public class FacebookLeadsWebhook extends HttpServlet {
                 Campaign campaign = facebookFetcher.getCampaign(webhook.getFormId());
                 Lead lead = facebookFetcher.getLead(webhook.getLeadId());
                 CampaignLeadEvent campaignLeadEvent = new CampaignLeadEvent(campaign,lead);
-                leadsEventPublisher.publishMessages(campaignLeadEvent,projectId, topicId);
+                leadsEventQueue.publishMessages(campaignLeadEvent,listeners);
             } catch (FacebookFetcherException ex) {
                 log.log(Level.SEVERE, null, ex);
             }
@@ -90,13 +89,11 @@ public class FacebookLeadsWebhook extends HttpServlet {
     private static final String HUB_VERIFY_TOKEN = "hub.verify_token";
     private static final String VERIFY_TOKEN_KEY = "verify.token";
     private static final String ACCESS_TOKEN_KEY = "access.token";
-    private static final String PROJECT_ID = "project.id";
-    private static final String TOPIC_ID = "topic.id";
-       
+    private static final String LISTENERS = "listeners";
+    private static final String COMMA = ",";
+    
     // To be configured
     private String verifyToken = null;
     private String accessToken = null;
-    private String projectId = null;
-    private String topicId = null;    
-    
+    private String[] listeners = null;
 }

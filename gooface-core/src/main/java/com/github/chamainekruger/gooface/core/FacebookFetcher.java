@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class FacebookFetcher {
     
-    private String accessToken;
+    private final String accessToken;
     
     public Campaign getCampaign(Long formId) throws FacebookFetcherException{
         try {

@@ -24,3 +24,6 @@ hs_err_pid*
 /gooface-example/target/
 /gooface-subscribers/bigdata-subscriber/target/
 /gooface-common/target/
+/bigdata-listeners/target/
+/bigdata-listener/target/
+/example-listener/target/

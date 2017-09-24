@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
     <parent>
         <groupId>com.github.chamainekruger</groupId>
         <artifactId>gooface</artifactId>
@@ -9,13 +8,18 @@
         <relativePath>../</relativePath>
     </parent>
     
-    <artifactId>gooface-subscribers</artifactId>
-    <packaging>pom</packaging>
+    <groupId>com.github.chamainekruger.gooface</groupId>
+    <artifactId>example-listener</artifactId>
+    <packaging>jar</packaging>
     
-    <name>gooface-subscribers</name>
-    <description>Build in subscribers for gooface</description>
+    <name>example-listener</name>
+    <description>Printing payoad to the log</description>
     
-    <modules>
-        <module>bigdata-subscriber</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>gooface-common</artifactId>
+            <version>${project.version}</version>  
+        </dependency>
+    </dependencies>
 </project>

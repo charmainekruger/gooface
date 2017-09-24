@@ -14,6 +14,12 @@
     <name>gooface-example</name>
     <description>Example application that use gooface-core</description>
     
+    <properties>
+        <jaxws.wsdl.url1>https://services.discovery.co.za/leads/services/leads?wsdl</jaxws.wsdl.url1>
+        <jaxws.java.package1>za.co.discovery.schemas.leads</jaxws.java.package1>
+                   
+    </properties>
+    
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -23,7 +29,13 @@
         
         <dependency>
             <groupId>${project.groupId}.gooface</groupId>
-            <artifactId>bigdata-subscriber</artifactId>
+            <artifactId>example-listener</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}.gooface</groupId>
+            <artifactId>bigdata-listener</artifactId>
             <version>${project.version}</version>
         </dependency>
         
@@ -33,13 +45,13 @@
         <finalName>${project.artifactId}</finalName>
         <!-- for hot reload of the web application-->
         <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
-<!--        <plugins>
+        <plugins>
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
                 <version>1.3.1</version>
                 <configuration>
-                    port>8081</port
+                    <!--port>8081</port-->
                 </configuration>
             </plugin>
             
@@ -57,8 +69,39 @@
                     </execution>
                 </executions>
             </plugin>
-
-        </plugins>-->
+          
+            <!-- usage of jax-ws maven plugin-->
+            <plugin> 
+                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>2.3.1-b20150201.1248</version>
+                <executions> 
+                    <execution> 
+                        <id>wsimport-from-jdk</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                      
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <xauthFile>${basedir}/src/main/java/com/github/chamainekruger/gooface/subscriber/example/auth</xauthFile>
+                            <wsdlUrls>
+                                <wsdlUrl>${jaxws.wsdl.url1}</wsdlUrl>
+                            </wsdlUrls>
+                            <xnocompile>false</xnocompile>
+                            <xdebug>true</xdebug>
+                            <packageName>${jaxws.java.package1}</packageName>
+                           
+                            <keep>true</keep> 
+                            <verbose>true</verbose>
+                                      
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
     
 </project>
