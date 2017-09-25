@@ -12,6 +12,7 @@ import com.restfb.types.webhook.WebhookObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -62,10 +63,11 @@ public class FacebookLeadsWebhook extends HttpServlet {
         List<Webhook> webhooks = toWebhookList(webhookObject);
         
         for(Webhook webhook : webhooks){
+            String ref = UUID.randomUUID().toString();
             try {
                 Campaign campaign = facebookFetcher.getCampaign(webhook.getFormId());
                 Lead lead = facebookFetcher.getLead(webhook.getLeadId());
-                CampaignLeadEvent campaignLeadEvent = new CampaignLeadEvent(campaign,lead);
+                CampaignLeadEvent campaignLeadEvent = new CampaignLeadEvent(ref,campaign,lead);
                 leadsEventQueue.publishMessages(campaignLeadEvent,listeners);
             } catch (FacebookFetcherException ex) {
                 log.log(Level.SEVERE, null, ex);

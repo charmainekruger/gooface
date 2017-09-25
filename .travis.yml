@@ -23,8 +23,6 @@ deploy:
     file: 
         - gooface-common/target/gooface-common-$project_version.jar
         - gooface-core/target/gooface-core-$project_version.jar
-        - gooface-example/target/gooface-example.war
-        - gooface-subscribers/bigdata-subscriber/target/bigdata-subscriber-$project_version.jar
     skip_cleanup: true  
     on:
         repo: charmainekruger/gooface

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import com.github.chamainekruger.gooface.common.GoofaceHelper;
+import java.util.logging.Level;
 
 /**
  * Example Listener
@@ -25,9 +26,10 @@ public class ExampleListener extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        
         String payload = helper.toJson(request.getReader());
         
-        log.info(">>>> " + payload);
+        log.log(Level.INFO, ">>>> payload \n{0}", payload);
         
     }
     

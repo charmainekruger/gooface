@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
  */
 @Data @AllArgsConstructor @NoArgsConstructor
 public class CampaignLeadEvent {
+    private String reference;
     private Campaign campaign;
     private Lead lead;
 }

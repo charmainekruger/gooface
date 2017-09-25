@@ -16,8 +16,6 @@ import lombok.extern.java.Log;
 public class LeadsEventQueue {
     private final Gson gson = new Gson();
     
-    private static final String PRE_URL = "/gooface/";
-    
     public void publishMessages(CampaignLeadEvent campaignLeadEvent, String[] subscribers) {
         String json = gson.toJson(campaignLeadEvent);
         
@@ -28,5 +26,5 @@ public class LeadsEventQueue {
         }
     }
 
-    
+    private static final String PRE_URL = "/gooface/";
 }
