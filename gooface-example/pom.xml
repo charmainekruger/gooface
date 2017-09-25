@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.chamainekruger</groupId>
         <artifactId>gooface</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../</relativePath>
     </parent>
     
@@ -24,12 +24,6 @@
         <dependency>
             <groupId>${project.groupId}.gooface</groupId>
             <artifactId>example-listener</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>${project.groupId}.gooface</groupId>
-            <artifactId>bigdata-listener</artifactId>
             <version>${project.version}</version>
         </dependency>
         
