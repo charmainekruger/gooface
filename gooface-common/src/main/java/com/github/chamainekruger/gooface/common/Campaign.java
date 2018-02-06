@@ -1,6 +1,7 @@
 package com.github.chamainekruger.gooface.common;
 
 import com.restfb.Facebook;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
  * @author Charmaine Kruger(charmaine.kruger@gmail.com)
  */
 @Data @AllArgsConstructor @NoArgsConstructor
-public class Campaign {
+public class Campaign implements Serializable {
+    
     @Facebook("id")
     private Long id;
     @Facebook("leadgen_export_csv_url")

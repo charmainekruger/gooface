@@ -34,6 +34,7 @@ public class FacebookFetcher {
         try {
             String json = getFacebookGraphData(formId,this.accessToken);
             JsonMapper mapper = new DefaultJsonMapper();
+            
             return mapper.toJavaObject(json, Campaign.class);
         } catch (IOException ex) {
             throw new FacebookFetcherException(ex);
@@ -61,7 +62,7 @@ public class FacebookFetcher {
         connection.connect();
         int responseCode = connection.getResponseCode();
         
-        log.log(Level.INFO, "-------------Sending 'GET' request to URL {0}", accessToken);
+        log.log(Level.INFO, "-------------Sending 'GET' request to URL {0}", url);
         log.log(Level.INFO, "-------------Response Code {0}", responseCode);
         
         if(responseCode == 200){

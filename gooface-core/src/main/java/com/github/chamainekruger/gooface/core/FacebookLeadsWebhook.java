@@ -4,6 +4,10 @@ import com.github.chamainekruger.gooface.common.CampaignLeadEvent;
 import com.github.chamainekruger.gooface.common.Campaign;
 import com.github.chamainekruger.gooface.common.Lead;
 import com.github.chamainekruger.gooface.core.event.LeadsEventQueue;
+import com.google.appengine.api.memcache.ErrorHandlers;
+import com.google.appengine.api.memcache.Expiration;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.restfb.DefaultJsonMapper;
 import com.restfb.JsonMapper;
 import com.restfb.types.webhook.PageLeadgen;
@@ -39,6 +43,14 @@ public class FacebookLeadsWebhook extends HttpServlet {
         this.accessToken = System.getProperty(ACCESS_TOKEN_KEY);
         this.facebookFetcher = new FacebookFetcher(accessToken);
         this.listeners = System.getProperty(LISTENERS).split(COMMA);
+        
+        
+        String d = System.getProperty(DUPLICATE_TIMEOUT);
+        if(d!=null && !d.isEmpty()){
+            d = d.trim();
+            int i = Integer.valueOf(d);
+            if(i>0)this.duplicateTimeoutSeconds=i;
+        }
     }
     
     @Override
@@ -68,7 +80,24 @@ public class FacebookLeadsWebhook extends HttpServlet {
                 Campaign campaign = facebookFetcher.getCampaign(webhook.getFormId());
                 Lead lead = facebookFetcher.getLead(webhook.getLeadId());
                 CampaignLeadEvent campaignLeadEvent = new CampaignLeadEvent(ref,campaign,lead);
-                leadsEventQueue.publishMessages(campaignLeadEvent,listeners);
+                
+                // Check for duplicates (if needed)
+                if(this.duplicateTimeoutSeconds>0){
+                    
+                    int hash = campaignLeadEvent.hashCode();
+                    MemcacheService duplicateCache = MemcacheServiceFactory.getMemcacheService("duplicateCache");
+                    duplicateCache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
+                    
+                    if(duplicateCache.contains(hash)){
+                        log.log(Level.WARNING, "Duplicate lead - not puplishing message \n[{0}]", duplicateCache.get(hash));
+                    }else{
+                        duplicateCache.put(hash, campaignLeadEvent,Expiration.byDeltaSeconds(duplicateTimeoutSeconds));
+                        leadsEventQueue.publishMessages(campaignLeadEvent,listeners);
+                    }
+                    
+                }else{
+                    leadsEventQueue.publishMessages(campaignLeadEvent,listeners);
+                }
             } catch (FacebookFetcherException ex) {
                 log.log(Level.SEVERE, null, ex);
             }
@@ -91,6 +120,7 @@ public class FacebookLeadsWebhook extends HttpServlet {
     private static final String HUB_VERIFY_TOKEN = "hub.verify_token";
     private static final String VERIFY_TOKEN_KEY = "verify.token";
     private static final String ACCESS_TOKEN_KEY = "access.token";
+    private static final String DUPLICATE_TIMEOUT = "duplicateCheckTimeout";
     private static final String LISTENERS = "listeners";
     private static final String COMMA = ",";
     
@@ -98,4 +128,5 @@ public class FacebookLeadsWebhook extends HttpServlet {
     private String verifyToken = null;
     private String accessToken = null;
     private String[] listeners = null;
+    private int duplicateTimeoutSeconds = 0;
 }

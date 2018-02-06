@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>gooface-example</application>
+    <basic-scaling>
+        <max-instances>1</max-instances>
+        <idle-timeout>10m</idle-timeout>
+    </basic-scaling>
     
     <runtime>java8</runtime>
     <ssl-enabled>true</ssl-enabled>
@@ -8,10 +12,10 @@
     <threadsafe>true</threadsafe>
         
     <system-properties>
-        <property name="verify.token" value="45be8cb2-8daf-11e7-bb31-be2e44b06b34" />
-        <property name="access.token" value="EAAWOZBmRbVj8BABbpERpZBRXEWXUbWO7aSiTyekMIFTS6sCoB0CSOTfUrSZCsdBXd8575P0svPmUxZBzVEYgqokQEZBEJwNraOFZCZBrAEuGn9OdTE1yv8SzVguEDyXNw6yG0Apwq0X7wyx3vIh7tDAouf2hzSeRnkQlE3P9HEmKq3BDeFuDUy2" />
+        <property name="verify.token" value="ede3b699-6e1a-4807-82f4-54204c2d90cf" />
+        <property name="access.token" value="EAAWOZBmRbVj8BADzWhq2dxFw2zT8Fabh1CkRqLJKpZBZAFuBYvlxCdfs59J4JfooIZBffLewjPLOgnZBQxw0PsxplhmpvheEcInhEbPRZBT6beDXTf6uLoUu89SMiVyOG2vCZAybvYbnoVLEOAdpMhHSG2XWmfOzcZBBZADpNqQiskzawSLGza0ZCz" />
         <property name="listeners" value="example" />
-        
+        <property name="duplicateCheckTimeout" value="600" />
     </system-properties>
     
 </appengine-web-app>

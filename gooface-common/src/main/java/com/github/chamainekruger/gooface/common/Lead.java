@@ -1,6 +1,7 @@
 package com.github.chamainekruger.gooface.common;
 
 import com.restfb.Facebook;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +17,8 @@ import lombok.extern.java.Log;
  */
 @Log
 @Data @AllArgsConstructor @NoArgsConstructor
-public class Lead {
+public class Lead implements Serializable {
+    
     @Facebook("created_time")
     private String createdTime;
     @Facebook("id")
